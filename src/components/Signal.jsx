@@ -40,7 +40,7 @@ const contactLinks = [
   },
 ];
 
-export default function Contact() {
+export default function Signal() {
   const sectionRef = useRef(null);
   const sectionAnimationsRef = useRef([]);
 
