@@ -6,6 +6,7 @@ import LazySection from './components/LazySection'
 import Preloader from './components/Preloader'
 import Specs from './components/Specs'
 import Hangar from './components/Hangar'
+import Contact from './components/Contact'
 
 const loadAbout = () => import('./components/About')
 const About = lazy(loadAbout)
@@ -46,6 +47,7 @@ function App() {
           <Footer />
           <Specs />
           <Hangar />
+          <Contact />
         </div>
       )}
 
