@@ -1,0 +1,322 @@
+import { useCallback, useRef } from "react";
+import gsap from "gsap";
+import useSectionVisibilityLifecycle from "../hooks/useSectionVisibilityLifecycle";
+
+const specs = [
+  {
+    label: "Primary Stack",
+    value: "JavaScript / React / Python",
+    desc: "Building modern web interfaces with strong frontend logic, responsive layouts, and interactive user experiences.",
+  },
+  {
+    label: "Frontend Focus",
+    value: "React / GSAP / Tailwind",
+    desc: "Crafting responsive interfaces with smooth motion, clean structure, and immersive visual flow.",
+  },
+  {
+    label: "Backend Support",
+    value: "Laravel / PHP / SQL",
+    desc: "Able to connect interfaces with database-driven systems and application logic.",
+  },
+  {
+    label: "Design Sense",
+    value: "Figma / Prototyping",
+    desc: "Creating layouts that feel modern, readable, and smooth across user journeys.",
+  },
+];
+
+const stats = [
+  { number: "90%", label: "React Interface Development", level: 90 },
+  { number: "88%", label: "Responsive UI Layout", level: 88 },
+  { number: "85%", label: "GSAP Motion System", level: 85 },
+  { number: "82%", label: "Backend & Database Flow", level: 82 },
+];
+
+export default function Specs() {
+  const sectionRef = useRef(null);
+  const sectionAnimationsRef = useRef([]);
+
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const cardsRef = useRef([]);
+  const statsRef = useRef([]);
+  const lineRef = useRef(null);
+  const glowRef = useRef(null);
+
+  const resetSpecsAnimation = useCallback(() => {
+    gsap.set([titleRef.current, subtitleRef.current], {
+      autoAlpha: 0,
+      y: 36,
+    });
+
+    gsap.set(cardsRef.current.filter(Boolean), {
+      autoAlpha: 0,
+      y: 70,
+      rotateX: 14,
+      scale: 0.94,
+      transformPerspective: 900,
+      transformOrigin: "50% 100%",
+    });
+
+    gsap.set(statsRef.current.filter(Boolean), {
+      autoAlpha: 0,
+      y: 40,
+      scale: 0.9,
+    });
+
+    gsap.set(lineRef.current, {
+      scaleX: 0,
+      transformOrigin: "left center",
+    });
+
+    gsap.set(glowRef.current, {
+      autoAlpha: 0,
+      scale: 0.8,
+    });
+  }, []);
+
+  const startSpecsAnimation = useCallback((controller) => {
+    const cards = cardsRef.current.filter(Boolean);
+    const statsItems = statsRef.current.filter(Boolean);
+
+    const introTimeline = gsap.timeline();
+
+    introTimeline
+      .to(glowRef.current, {
+        autoAlpha: 1,
+        scale: 1,
+        duration: 1,
+        ease: "power3.out",
+      })
+      .to(
+        titleRef.current,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.75,
+          ease: "power3.out",
+        },
+        "-=0.75"
+      )
+      .to(
+        subtitleRef.current,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power3.out",
+        },
+        "-=0.45"
+      )
+      .to(
+        lineRef.current,
+        {
+          scaleX: 1,
+          duration: 0.9,
+          ease: "power3.inOut",
+        },
+        "-=0.35"
+      )
+      .to(
+        cards,
+        {
+          autoAlpha: 1,
+          y: 0,
+          rotateX: 0,
+          scale: 1,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: "power3.out",
+        },
+        "-=0.45"
+      )
+      .to(
+        statsItems,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.35"
+      );
+
+    controller.add(introTimeline);
+
+    controller.add(
+      gsap.to(glowRef.current, {
+        yPercent: -12,
+        rotate: 8,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      })
+    );
+
+    controller.add(
+      gsap.to(cards, {
+        y: -6,
+        duration: 2.4,
+        repeat: -1,
+        yoyo: true,
+        stagger: 0.18,
+        ease: "sine.inOut",
+      })
+    );
+  }, []);
+
+  useSectionVisibilityLifecycle(sectionRef, sectionAnimationsRef, {
+    onEnter: startSpecsAnimation,
+    onReset: resetSpecsAnimation,
+  });
+
+  return (
+    <section
+      ref={sectionRef}
+      id="specs"
+      className="min-h-screen px-6 lg:px-12 py-24 flex items-center relative overflow-hidden"
+    >
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,245,255,0.14),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(255,182,147,0.1),transparent_32%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,245,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,245,255,0.04)_1px,transparent_1px)] bg-[size:54px_54px] opacity-25" />
+      </div>
+
+      <div
+        ref={glowRef}
+        className="absolute right-[-10rem] top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-[#00f5ff]/10 blur-3xl pointer-events-none"
+      />
+
+      <div className="max-w-6xl mx-auto w-full relative z-10">
+        <div className="mb-14 max-w-3xl">
+          <p
+            ref={subtitleRef}
+            className="text-[#00f5ff] text-xs tracking-[0.45em] font-black mb-5 uppercase"
+          >
+            TECHNICAL SPECIFICATIONS
+          </p>
+
+          <h2
+            ref={titleRef}
+            className="text-4xl md:text-7xl font-headline font-black uppercase italic tracking-[-0.07em] text-white"
+          >
+            Built for clean systems, sharp interfaces, and smooth motion.
+          </h2>
+
+          <div
+            ref={lineRef}
+            className="mt-8 h-[1px] w-full bg-gradient-to-r from-[#00f5ff] via-[#00f5ff]/40 to-transparent"
+          />
+        </div>
+
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-start">
+          <div className="grid sm:grid-cols-2 gap-6">
+            {specs.map((item, index) => (
+              <article
+                key={item.label}
+                ref={(element) => (cardsRef.current[index] = element)}
+                className="group relative border border-[#00f5ff]/20 bg-[#101417]/60 p-6 backdrop-blur-md transition-all duration-300 hover:border-[#00f5ff]/60 hover:bg-[#00f5ff]/[0.06]"
+              >
+                <div className="absolute top-0 left-0 h-3 w-3 border-l border-t border-[#00f5ff]" />
+                <div className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-[#00f5ff]" />
+
+                <p className="mb-4 text-[10px] font-black uppercase tracking-[0.35em] text-[#00f5ff]/80">
+                  {item.label}
+                </p>
+
+                <h3 className="mb-4 text-2xl font-black uppercase italic tracking-[-0.04em] text-white transition-colors duration-300 group-hover:text-[#00f5ff]">
+                  {item.value}
+                </h3>
+
+                <p className="text-sm leading-relaxed text-[#b9caca]/80">
+                  {item.desc}
+                </p>
+
+                <div className="mt-6 h-[3px] w-full bg-[#1a1f23] overflow-hidden">
+                  <div className="h-full w-2/3 bg-[#00f5ff] transition-all duration-500 group-hover:w-full" />
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="relative border border-[#00f5ff]/20 bg-[#101417]/70 p-7 backdrop-blur-md">
+            <div className="absolute top-0 left-0 h-4 w-4 border-l border-t border-[#00f5ff]" />
+            <div className="absolute top-0 right-0 h-4 w-4 border-r border-t border-[#00f5ff]" />
+            <div className="absolute bottom-0 left-0 h-4 w-4 border-l border-b border-[#00f5ff]" />
+            <div className="absolute bottom-0 right-0 h-4 w-4 border-r border-b border-[#00f5ff]" />
+
+            <p className="mb-8 text-[10px] font-black uppercase tracking-[0.4em] text-[#00f5ff]">
+  PERFORMANCE MATRIX
+</p>
+
+<div className="space-y-5">
+  {stats.map((item, index) => {
+    const radius = 18;
+    const circumference = 2 * Math.PI * radius;
+    const progress = circumference * (1 - item.level / 100);
+
+    return (
+      <div
+        key={item.label}
+        ref={(element) => (statsRef.current[index] = element)}
+        className="flex items-center justify-between gap-5 border-b border-[#00f5ff]/10 pb-5 last:border-b-0 last:pb-0"
+      >
+        <div>
+          <p className="text-3xl font-black italic text-white">
+            {item.number}
+          </p>
+
+          <p className="mt-1 text-[10px] uppercase tracking-[0.25em] text-[#b9caca]/70">
+            {item.label}
+          </p>
+        </div>
+
+        <div className="relative h-12 w-12 rounded-full border border-[#00f5ff]/30 bg-[#00f5ff]/5 shadow-[0_0_25px_rgba(0,245,255,0.08)]">
+          <svg
+            className="absolute inset-0 h-full w-full -rotate-90"
+            viewBox="0 0 48 48"
+          >
+            <circle
+              cx="24"
+              cy="24"
+              r={radius}
+              fill="none"
+              stroke="rgba(0,245,255,0.12)"
+              strokeWidth="3"
+            />
+
+            <circle
+              cx="24"
+              cy="24"
+              r={radius}
+              fill="none"
+              stroke="#00f5ff"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={progress}
+              className="drop-shadow-[0_0_8px_rgba(0,245,255,0.75)]"
+            />
+          </svg>
+
+          <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00f5ff] shadow-[0_0_12px_rgba(0,245,255,0.9)]" />
+        </div>
+      </div>
+    );
+  })}
+            </div>
+
+            <div className="mt-8 rounded-none border border-[#00f5ff]/15 bg-[#00f5ff]/[0.03] p-4">
+            <p className="text-xs leading-relaxed text-[#b9caca]/75">
+                Calibrated for responsive interface systems, smooth motion layers,
+                clean component structure, and reliable data-driven web workflows.
+            </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

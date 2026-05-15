@@ -1,0 +1,112 @@
+/* 🔥 IMPORT HARUS PALING ATAS */
+@import "@fontsource/space-grotesk/300.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/900.css";
+
+/* 🔥 TAILWIND */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* 🔥 COMPONENT */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-slower {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes main-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-spin-slower {
+  animation: spin-slower 14s linear infinite;
+}
+
+.animate-main-enter {
+  animation: main-enter 700ms ease-out both;
+}
+
+@layer components {
+  .scanline {
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 245, 255, 0.05) 50%);
+    background-size: 100% 4px;
+  }
+
+  .chamfer-btn {
+    clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+  }
+
+  .hud-corner {
+    position: relative;
+  }
+
+  .hud-corner::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #00f5ff;
+    border-left: 2px solid #00f5ff;
+  }
+
+  .hud-corner::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid #00f5ff;
+    border-right: 2px solid #00f5ff;
+  }
+}
+
+
+/* 🔥 GLOBAL */
+body {
+  background-color: #101417;
+  color: #e0e3e7;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+section {
+  will-change: transform, opacity;
+}
+
+::selection {
+  background-color: #00f5ff;
+  color: #003739;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
