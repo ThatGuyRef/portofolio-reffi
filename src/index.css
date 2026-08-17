@@ -2,176 +2,882 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   PALETTE — 16-bit console
+   ============================================================ */
 :root {
-  --neo-bg: #f7f4ea;
-  --neo-black: #0b0b0b;
-  --neo-white: #ffffff;
-  --neo-cyan: #35c9ff;
-  --neo-pink: #ff4fd8;
-  --neo-yellow: #ffe45c;
-  --neo-lime: #b7ff4a;
-  --neo-purple: #8f5cff;
-}
+  --void: #0d0720;
+  --deep: #160c2e;
+  --panel: #1a1033;
+  --panel-raised: #1f1240;
+  --border-muted: #6a5aa0;
+  --magenta: #ff2e88;
+  --cyan: #22e0ff;
+  --yellow: #ffd447;
+  --green: #4ef58a;
+  --ink: #f2f0ff;
+  --ink-dim: #c9c2ec;
+  --ink-faint: #8e83c4;
 
-html {
-  scroll-behavior: smooth;
-}
+  --accent: var(--magenta);
 
-body {
-  margin: 0;
-  background: var(--neo-bg);
-  color: var(--neo-black);
-  font-family: Inter, system-ui, sans-serif;
+  --pixel: "Press Start 2P", "Courier New", monospace;
+  --body: "VT323", "Courier New", monospace;
 }
 
 * {
   box-sizing: border-box;
+  border-radius: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--void);
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ink-dim);
+  font-family: var(--body);
+  font-size: 21px;
+  line-height: 1.6;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* full-height that survives mobile browser chrome */
+.screen-h {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 ::selection {
-  background: var(--neo-pink);
-  color: var(--neo-white);
+  background: var(--magenta);
+  color: var(--void);
 }
 
-/* Base page background */
-.neo-page {
-  background-color: var(--neo-bg);
+img {
+  image-rendering: auto;
+}
+
+/* ============================================================
+   TYPE
+   ============================================================ */
+.pix {
+  font-family: var(--pixel);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 1px;
+}
+
+.pix-meta {
+  font-family: var(--pixel);
+  font-size: 8px;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.pix-label {
+  font-family: var(--pixel);
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.pix-card-title {
+  font-family: var(--pixel);
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.body-copy {
+  font-family: var(--body);
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.body-copy-sm {
+  font-family: var(--body);
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.section {
+  position: relative;
+  padding: 90px 24px;
+  border-top: 4px solid var(--accent);
+}
+
+.section--void {
+  background: var(--void);
+}
+
+.section--deep {
+  background: var(--deep);
+}
+
+.section--magenta {
+  --accent: var(--magenta);
+}
+
+.section--cyan {
+  --accent: var(--cyan);
+}
+
+.section--yellow {
+  --accent: var(--yellow);
+}
+
+.shell {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.shell--prose {
+  max-width: 900px;
+}
+
+/* min() keeps the track from outgrowing a narrow viewport — a bare
+   minmax(300px, 1fr) forces horizontal scroll under ~330px wide */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 24px;
+}
+
+.grid-auto--wide {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 26px;
+}
+
+.grid-auto--tight {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 20px;
+}
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sec-num {
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--yellow);
+  flex-shrink: 0;
+}
+
+.sec-title {
+  font-family: var(--pixel);
+  font-size: clamp(16px, 3vw, 26px);
+  letter-spacing: 2px;
+  line-height: 1.5;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 var(--accent);
+  flex-shrink: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sec-rule {
+  flex: 1;
+  min-width: 24px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0 10px,
+    transparent 10px 20px
+  );
+}
+
+.sec-intro {
+  max-width: 640px;
+  margin-bottom: 44px;
+  font-family: var(--body);
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+  position: relative;
+  border: 3px solid var(--ink);
+  background: var(--panel);
+  box-shadow: 8px 8px 0 var(--accent);
+  padding: 22px;
+  transition: transform 0.15s steps(2), box-shadow 0.15s steps(2);
+}
+
+.card--raised {
+  background: var(--panel-raised);
+}
+
+.card--muted {
+  border-color: var(--border-muted);
+}
+
+.card-hover:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--magenta);
+  cursor: pointer;
+  transition: transform 0.15s steps(2), box-shadow 0.15s steps(2);
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 var(--magenta);
+}
+
+.btn--primary {
+  background: var(--yellow);
+  color: var(--void);
+}
+
+.btn--secondary {
+  background: transparent;
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border-muted);
+  color: var(--ink-faint);
+  box-shadow: 6px 6px 0 var(--border-muted);
+  cursor: not-allowed;
+}
+
+.btn--ghost:hover {
+  transform: none;
+  box-shadow: 6px 6px 0 var(--border-muted);
+}
+
+.btn--sm {
+  font-size: 9px;
+  padding: 10px 14px;
+}
+
+/* ============================================================
+   TAG
+   ============================================================ */
+.tag {
+  display: inline-block;
+  font-family: var(--pixel);
+  font-size: 8px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  padding: 5px 7px;
+  border: 2px solid var(--accent);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tag--cyan {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.tag--yellow {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.tag--green {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.tag--magenta {
+  border-color: var(--magenta);
+  color: var(--magenta);
+}
+
+.tag--muted {
+  border-color: var(--border-muted);
+  color: var(--ink-faint);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ============================================================
+   STAT BAR
+   ============================================================ */
+.bar {
+  border: 2px solid var(--ink);
+  background: var(--void);
+  padding: 2px;
+}
+
+.bar__fill {
+  display: block;
+  height: 12px;
+  width: 0%;
+  background: var(--accent);
+}
+
+.bar__fill--cyan {
+  background: var(--cyan);
+}
+
+.bar__fill--yellow {
+  background: var(--yellow);
+}
+
+.bar__fill--green {
+  background: var(--green);
+}
+
+.bar__fill--magenta {
+  background: var(--magenta);
+}
+
+/* pips */
+.pips {
+  display: flex;
+  gap: 4px;
+}
+
+.pip {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--border-muted);
+}
+
+.pip--on {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* ============================================================
+   OVERLAYS
+   ============================================================ */
+.crt-scanlines,
+.crt-flicker,
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+}
+
+.crt-scanlines {
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0.32;
+}
+
+.crt-flicker {
+  background: var(--cyan);
+  mix-blend-mode: overlay;
+  opacity: 0.045;
+  animation: phosphor 3.2s steps(8) infinite;
+}
+
+.crt-vignette {
+  box-shadow: inset 0 0 180px 40px rgba(0, 0, 0, 0.75);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes phosphor {
+  0%,
+  100% {
+    opacity: 0.045;
+  }
+  50% {
+    opacity: 0.08;
+  }
+}
+
+@keyframes glitchA {
+  0%,
+  92%,
+  100% {
+    text-shadow: 4px 4px 0 var(--magenta);
+    transform: translate(0, 0);
+  }
+  93% {
+    text-shadow: -3px 0 0 var(--cyan), 3px 0 0 var(--magenta);
+    transform: translate(-2px, 1px);
+  }
+  95% {
+    text-shadow: 3px 0 0 var(--cyan), -3px 0 0 var(--magenta);
+    transform: translate(2px, -1px);
+  }
+  97% {
+    text-shadow: 4px 4px 0 var(--magenta);
+    transform: translate(-1px, 0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes starfield {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: -600px 300px, 400px -200px;
+  }
+}
+
+@keyframes cartridge-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.anim-glitch {
+  animation: glitchA 6s steps(1) infinite;
+}
+
+.anim-blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+.anim-bob {
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+.starfield {
   background-image:
-    linear-gradient(rgba(11, 11, 11, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(11, 11, 11, 0.045) 1px, transparent 1px);
-  background-size: 34px 34px;
+    radial-gradient(1px 1px at 20% 30%, var(--ink) 50%, transparent 50%),
+    radial-gradient(1px 1px at 70% 60%, var(--ink-faint) 50%, transparent 50%);
+  background-size: 220px 220px, 340px 340px;
+  animation: starfield 24s linear infinite;
+  opacity: 0.5;
 }
 
-/* Main brutalism objects */
-.neo-pill {
-  border: 4px solid var(--neo-black);
-  border-radius: 999px;
-  background: var(--neo-white);
-  box-shadow: 6px 6px 0 var(--neo-black);
+.pixel-grid {
+  background-image:
+    linear-gradient(rgba(106, 90, 160, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(106, 90, 160, 0.28) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-.neo-card {
-  border: 4px solid var(--neo-black);
-  border-radius: 28px;
-  background: var(--neo-white);
-  box-shadow: 8px 8px 0 var(--neo-black);
+.pixel-grid--horizon {
+  background-image:
+    linear-gradient(rgba(34, 224, 255, 0.55) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 46, 136, 0.45) 2px, transparent 2px);
+  background-size: 48px 48px;
 }
 
-.neo-card-hover {
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+/* ============================================================
+   MISC
+   ============================================================ */
+.link-cyan {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
 }
 
-.neo-card-hover:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 4px 4px 0 var(--neo-black);
+.link-cyan:hover {
+  border-bottom-color: var(--cyan);
 }
 
-.neo-button {
-  display: inline-flex;
-  align-items: center;
+.hard-divider {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0 10px,
+    transparent 10px 20px
+  );
+}
+
+/* scrollbars */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--magenta);
+  border: 2px solid var(--void);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.nav-brand {
+  font-size: 11px;
+}
+
+@media (max-width: 400px) {
+  .nav-brand {
+    font-size: 9px;
+    gap: 5px;
+  }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+/* .section.hero so the responsive `.section` padding below cannot clobber it */
+.section.hero {
+  padding-top: 110px;
+  padding-bottom: 80px;
+  border-top: none;
+}
+
+.hero-title {
+  font-size: clamp(26px, 6.2vw, 66px);
+  line-height: 1.15;
+  letter-spacing: 3px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.hero-role {
+  margin-top: 26px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+
+.hero-cue {
+  margin-top: 64px;
+  color: var(--ink-faint);
+}
+
+.hero-glow {
+  width: 620px;
+  height: 620px;
+  left: calc(50% - 310px);
+  top: calc(50% - 310px);
+}
+
+/* the hero grid only splits in two at 1024px — below that the player card
+   must stay card-sized instead of stretching the portrait across the screen */
+.hud-card {
+  padding: 20px;
+  width: 100%;
+  max-width: 340px;
+}
+
+/* source photo is portrait 2:3 — a landscape frame cut the jaw off, so the
+   frame stays portrait and the crop is anchored near the top of the head */
+.hud-card__photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 380px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+@media (min-width: 1024px) {
+  .hud-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .section.hero {
+    padding-top: 96px;
+    padding-bottom: 56px;
+  }
+
+  .hero-title {
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+
+  .hero-role {
+    margin-top: 20px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .hero-actions {
+    gap: 14px;
+  }
+
+  .hero-cue {
+    margin-top: 36px;
+  }
+
+  .hero-glow {
+    width: 420px;
+    height: 420px;
+    left: calc(50% - 210px);
+    top: calc(50% - 210px);
+  }
+
+  .hud-card {
+    padding: 16px;
+  }
+
+  .hud-card__photo {
+    aspect-ratio: 1 / 1;
+    max-height: 300px;
+    object-position: center 24%;
+  }
+}
+
+/* ============================================================
+   PRELOADER — cartridge scan
+   ============================================================ */
+.boot-banner {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  display: flex;
   justify-content: center;
-  gap: 10px;
-  border: 4px solid var(--neo-black);
-  border-radius: 999px;
-  background: var(--neo-black);
-  color: var(--neo-white);
-  box-shadow: 5px 5px 0 var(--neo-cyan);
-  font-weight: 900;
-  text-transform: uppercase;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+  padding: 0 16px;
 }
 
-.neo-button:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 var(--neo-cyan);
+.boot-banner__text {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--yellow);
+  text-align: center;
 }
 
-.neo-button-light {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 4px solid var(--neo-black);
-  border-radius: 999px;
-  background: var(--neo-yellow);
-  color: var(--neo-black);
-  box-shadow: 5px 5px 0 var(--neo-black);
-  font-weight: 900;
-  text-transform: uppercase;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+.cartridge {
+  width: min(500px, 100%);
+  height: 210px;
+  border: 4px solid var(--ink);
+  background: var(--panel);
+  box-shadow: 10px 10px 0 var(--magenta);
 }
 
-.neo-button-light:hover {
-  transform: translate(3px, 3px);
-  background: var(--neo-lime);
-  box-shadow: 2px 2px 0 var(--neo-black);
+.cartridge__label {
+  width: min(440px, 86%);
+  height: 70px;
+  margin-top: 24px;
+  padding: 0 10px;
+  border: 3px solid var(--ink);
+  background: var(--magenta);
 }
 
-/* Typography */
-.neo-title {
-  font-weight: 1000;
-  line-height: 0.88;
-  letter-spacing: -0.07em;
-  text-transform: uppercase;
-}
-
-.neo-highlight-pink {
-  color: var(--neo-pink);
-  -webkit-text-stroke: 2px var(--neo-black);
-  text-shadow: 4px 4px 0 var(--neo-yellow);
-}
-
-.neo-highlight-cyan {
-  color: var(--neo-cyan);
-  -webkit-text-stroke: 2px var(--neo-black);
-  text-shadow: 4px 4px 0 var(--neo-black);
-}
-
-.neo-label {
-  display: inline-flex;
-  align-items: center;
-  border: 4px solid var(--neo-black);
-  border-radius: 999px;
-  background: var(--neo-yellow);
-  color: var(--neo-black);
-  box-shadow: 4px 4px 0 var(--neo-black);
-  padding: 8px 16px;
+.cartridge__label-text {
   font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--void);
+  text-align: center;
 }
 
-/* Floating sticker style */
-.neo-sticker {
-  border: 4px solid var(--neo-black);
-  border-radius: 18px;
-  background: var(--neo-cyan);
-  box-shadow: 5px 5px 0 var(--neo-black);
-  transform: rotate(-8deg);
+.cartridge__notch {
+  width: 140px;
+  max-width: 60%;
+  height: 8px;
+  margin-top: 16px;
+  background: var(--border-muted);
 }
 
-.neo-sticker-pink {
-  border: 4px solid var(--neo-black);
-  border-radius: 18px;
-  background: var(--neo-pink);
-  box-shadow: 5px 5px 0 var(--neo-black);
-  transform: rotate(8deg);
+.cartridge__pins {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(392px, 86%);
+  height: 26px;
+  /* centered so the pattern clips evenly on both ends at any width */
+  background-position: center;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--yellow) 0 8px,
+    transparent 8px 14px,
+    var(--border-muted) 14px 22px,
+    transparent 22px 28px
+  );
 }
 
-.neo-sticker-yellow {
-  border: 4px solid var(--neo-black);
-  border-radius: 18px;
-  background: var(--neo-yellow);
-  box-shadow: 5px 5px 0 var(--neo-black);
-  transform: rotate(-5deg);
+.boot-progress__seg {
+  width: 8px;
+  height: 18px;
+}
+
+@media (max-width: 640px) {
+  .boot-banner {
+    top: 48px;
+  }
+
+  .boot-banner__text {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .cartridge {
+    height: 180px;
+    box-shadow: 7px 7px 0 var(--magenta);
+  }
+
+  .cartridge__label {
+    height: 58px;
+    margin-top: 18px;
+  }
+
+  .cartridge__label-text {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .cartridge__notch {
+    margin-top: 12px;
+  }
+
+  .cartridge__pins {
+    bottom: 12px;
+    height: 20px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — tablet
+   ============================================================ */
+/* Every spec value — 90px section padding, 24px gutters, 8px card shadow,
+   6px button shadow, 3px section-title shadow, 8px tags, the clamp() floor of
+   16px on section titles, the 180/40 vignette — holds at every width. Only
+   layout behaviour the spec does not fix is adjusted below: what wraps, what
+   goes full width, and how tight the padding inside a card is. */
+@media (max-width: 640px) {
+  body {
+    font-size: 20px; /* VT323 floor from the spec */
+  }
+
+  /* number + title + rule cannot share one line at 16px pixel type */
+  .sec-head {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .sec-title {
+    letter-spacing: 1px;
+    flex-basis: calc(100% - 44px);
+  }
+
+  .sec-rule {
+    flex-basis: 100%;
+  }
+
+  .sec-intro {
+    margin-bottom: 28px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  /* thumb-sized targets */
+  .btn {
+    min-height: 44px;
+  }
+
+  .btn-block-sm {
+    width: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-glitch,
+  .anim-blink,
+  .anim-bob,
+  .starfield,
+  .crt-flicker {
+    animation: none !important;
+  }
+}
+
+/* PRESS START uses the spec's primary button (yellow fill, 3px ink border,
+   6px magenta hard shadow) and presses into its shadow on :active */
+.retro-play-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 var(--magenta);
 }
